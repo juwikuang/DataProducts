@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Normal Distribution Simple Application</title>
+  <meta charset="utf-8">
+  <meta name="description" content="Normal Distribution Simple Application">
+  <meta name="author" content="Eric Chow">
+  <meta name="generator" content="slidify" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/default.css" media="all" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/phone.css" 
+    media="only screen and (max-device-width: 480px)" >
+  <link rel="stylesheet" href="libraries/frameworks/io2012/css/slidify.css" >
+  <link rel="stylesheet" href="libraries/highlighters/highlight.js/css/tomorrow.css" />
+  <base target="_blank"> <!-- This amazingness opens all links in a new tab. -->  <link rel=stylesheet href="./assets/css/ribbons.css"></link>
+
+  
+  <!-- Grab CDN jQuery, fall back to local if offline -->
+  <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.min.js"></script>
+  <script>window.jQuery || document.write('<script src="libraries/widgets/quiz/js/jquery.js"><\/script>')</script> 
+  <script data-main="libraries/frameworks/io2012/js/slides" 
+    src="libraries/frameworks/io2012/js/require-1.0.8.min.js">
+  </script>
+  
+  
+
+</head>
+<body style="opacity: 0">
+  <slides class="layout-widescreen">
+    
+    <!-- LOGO SLIDE -->
+        <slide class="title-slide segue nobackground">
+  <hgroup class="auto-fadein">
+    <h1>Normal Distribution Simple Application</h1>
+    <h2>Coursework of data products</h2>
+    <p>Eric Chow<br/>Jobless</p>
+  </hgroup>
+  <article></article>  
+</slide>
+    
+
+    <!-- SLIDES -->
+    <slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Introduction</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>This is a very simple application for demostration of normal distribution.
+In this application, the user can change the mean and standard deviation.
+After that, a hitogram will be generated.</p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>ui.R</h2>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r">shinyUI(pageWithSidebar(
+    headerPanel(&quot;Normal Distribution&quot;),
+    sidebarPanel(
+        textInput(inputId=&quot;textMean&quot;, label = &quot;Mean&quot;, value = 0),
+        textInput(inputId=&quot;textSigma&quot;, label = &quot;Standard Deviation&quot;, value=1),
+        actionButton(&quot;refreshButton&quot;, &quot;refresh!&quot;)
+    ),
+    mainPanel(
+        p(&#39;Mean&#39;),
+        textOutput(&#39;textMean&#39;),
+        p(&#39;Standard Deviatioin&#39;),
+        textOutput(&#39;textSigma&#39;),
+        plotOutput(&quot;plot&quot;)
+    )
+))
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>ui.R</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>The ui.R file creates two text boxes, one for the mean and the other for the standard deviation.
+The refresh button will refresh the result.</p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Server.R</h2>
+  </hgroup>
+  <article data-timings="">
+    <pre><code class="r">shinyServer(
+    function(input, output) {
+        showHist = function(){
+            my.mean = as.numeric(input$textMean)
+            my.sigma = as.numeric(input$textSigma)
+            x = rnorm(1000,my.mean, my.sigma)
+            hist(x)
+        }
+        output$textMean &lt;- renderText(input$textMean)
+        output$textSigma &lt;- renderText(input$textSigma)
+        output$plot = reactivePlot(function(){
+            input$refreshButton
+            isolate(showHist())
+        })
+    }
+)
+</code></pre>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+<slide class="class" id="id" style="background:;">
+  <hgroup>
+    <h2>Server.R</h2>
+  </hgroup>
+  <article data-timings="">
+    <p>The server.R file converts the input values (mean and standard deviation) into numerics.
+There is no error check, so if the input is not a numeric value, an error will be print out.</p>
+
+  </article>
+  <!-- Presenter Notes -->
+</slide>
+
+    <slide class="backdrop"></slide>
+  </slides>
+  <div class="pagination pagination-small" id='io2012-ptoc' style="display:none;">
+    <ul>
+      <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=1 title='Introduction'>
+         1
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=2 title='ui.R'>
+         2
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=3 title='ui.R'>
+         3
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=4 title='Server.R'>
+         4
+      </a>
+    </li>
+    <li>
+      <a href="#" target="_self" rel='tooltip' 
+        data-slide=5 title='Server.R'>
+         5
+      </a>
+    </li>
+  </ul>
+  </div>  <!--[if IE]>
+    <script 
+      src="http://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js">  
+    </script>
+    <script>CFInstall.check({mode: 'overlay'});</script>
+  <![endif]-->
+</body>
+  <!-- Load Javascripts for Widgets -->
+  
+  <!-- LOAD HIGHLIGHTER JS FILES -->
+  <script src="libraries/highlighters/highlight.js/highlight.pack.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+  <!-- DONE LOADING HIGHLIGHTER JS FILES -->
+   
+  </html>
